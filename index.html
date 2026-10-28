@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cantidad: esquema visual</title>
+<style>
+:root{
+  --bg:#EEF1F8; --card:#FFFFFF; --ink:#14213D; --muted:#56607F; --line:#D9DEEC; --on:#FFFFFF;
+  --blue:#2F5BEA; --blue-s:#E6ECFF; --teal:#11806D; --teal-s:#DDF3EE; --coral:#D4452B; --coral-s:#FDE7E1;
+  --violet:#7B3FD1; --violet-s:#EFE6FB; --amber:#A35F00; --amber-s:#FFF0D1; --green:#2E7D32; --green-s:#E2F3E3;
+  --gold:#FFC93C; --goldink:#14213D;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1322; --card:#18203A; --ink:#E9EDF9; --muted:#A0A9C6; --line:#2B3558; --on:#0E1322;
+    --violet:#C3A0FF; --violet-s:#2E2350; --amber:#FFB74D; --amber-s:#3B2D12; --green:#7FD68A; --green-s:#17301B;
+    --blue:#8CA6FF; --blue-s:#232C52; --teal:#4FD1B8; --teal-s:#17352F; --coral:#FF8F73; --coral-s:#3D2520; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1322; --card:#18203A; --ink:#E9EDF9; --muted:#A0A9C6; --line:#2B3558; --on:#0E1322;
+  --violet:#C3A0FF; --violet-s:#2E2350; --amber:#FFB74D; --amber-s:#3B2D12; --green:#7FD68A; --green-s:#17301B;
+  --blue:#8CA6FF; --blue-s:#232C52; --teal:#4FD1B8; --teal-s:#17352F; --coral:#FF8F73; --coral-s:#3D2520; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS","Segoe UI",Verdana,sans-serif;line-height:1.55;font-size:16px}
+.wrap{max-width:920px;margin:0 auto;padding:16px 14px 60px}
+.head{display:flex;align-items:center;gap:14px;margin:4px 0 16px;padding:18px 20px;border-radius:20px;color:#fff;
+  background:linear-gradient(100deg,#2F5BEA,#7B3FD1 45%,#D4452B 80%,#E58A00)}
+.head .tag{background:var(--gold);color:var(--goldink);font-weight:800;border-radius:10px;padding:6px 12px;font-size:.95rem}
+.head h1{margin:0;font-size:1.45rem;line-height:1.2}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.tab{font:inherit;cursor:pointer;border:3px solid var(--c);background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--ink);
+  border-radius:16px;padding:12px 8px;font-weight:800;font-size:.95rem;line-height:1.2}
+.tab[aria-selected="true"]{background:var(--c);color:var(--on);box-shadow:0 5px 0 color-mix(in srgb,var(--c) 55%,#000)}
+.tab:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.panel{--c:var(--blue);--s:var(--blue-s)}
+.panel[hidden]{display:none}
+.hero{position:relative;overflow:hidden;background:var(--c);color:var(--on);border-radius:22px;padding:26px 22px;margin-bottom:8px}
+.hero::after{content:"";position:absolute;right:-40px;top:-50px;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.22)}
+.hero::before{content:"";position:absolute;right:90px;bottom:-60px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.14)}
+.hero h2{margin:0 0 6px;font-size:1.8rem;line-height:1.15;position:relative}
+.hero p{margin:0;font-size:1.12rem;font-weight:700;max-width:44ch;position:relative}
+.sec{margin:28px 0 12px}
+.sec h3{display:inline-block;margin:0;font-size:1.05rem;background:var(--c);color:var(--on);padding:5px 16px;border-radius:999px}
+.formulas{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.f{background:color-mix(in srgb,var(--c) 11%,var(--card));border:2px solid color-mix(in srgb,var(--c) 40%,var(--card));border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.f .lbl{font-size:.9rem;color:var(--ink);font-weight:800;padding:0 4px}
+.f .m{display:block;background:var(--c);color:var(--on);border-radius:12px;padding:12px 10px;text-align:center;font-size:1.3rem;font-weight:800;line-height:1.35;word-break:break-word}
+.f .e{display:block;font-size:.88rem;color:var(--muted);padding:0 4px}
+.problem{background:color-mix(in srgb,var(--c) 10%,var(--card));border:2px solid color-mix(in srgb,var(--c) 35%,var(--card));border-radius:16px;padding:12px 14px;margin-bottom:14px}
+.problem .src{display:inline-block;background:var(--c);color:var(--on);font-weight:800;font-size:.8rem;border-radius:8px;padding:2px 10px;margin-bottom:6px}
+.problem p{margin:0;font-size:1.02rem}
+ol.steps{list-style:none;margin:0 0 8px;padding:0}
+ol.steps li{display:grid;grid-template-columns:40px 1fr;gap:12px;position:relative;padding-bottom:14px}
+ol.steps li::before{content:"";position:absolute;left:19px;top:40px;bottom:0;width:4px;border-radius:4px;background:color-mix(in srgb,var(--c) 35%,var(--card))}
+ol.steps li:last-child::before{display:none}
+.n{width:40px;height:40px;border-radius:50%;background:var(--c);color:var(--on);font-weight:800;display:grid;place-items:center;font-size:1.1rem}
+.body{background:var(--card);border:2px solid color-mix(in srgb,var(--c) 30%,var(--card));border-left:8px solid var(--c);border-radius:12px;padding:10px 12px}
+.do{display:block;font-weight:800}
+.why{display:block;color:var(--muted);font-size:.93rem;margin-top:2px}
+.calc{display:block;margin-top:8px;background:color-mix(in srgb,var(--c) 18%,var(--card));border-radius:10px;padding:8px 12px;font-weight:800;font-size:1.1rem;overflow-x:auto;white-space:nowrap}
+.warn{margin-top:8px;border-left:6px solid var(--gold);background:color-mix(in srgb,var(--gold) 22%,var(--card));border-radius:8px;padding:8px 11px;font-size:.92rem}
+.ans{display:inline-block;background:var(--gold);color:var(--goldink);font-weight:800;border-radius:14px;padding:10px 20px;font-size:1.15rem;box-shadow:0 4px 0 #C99A10}
+.bars{background:var(--card);border:2px solid color-mix(in srgb,var(--c) 30%,var(--card));border-radius:12px;padding:10px 12px;margin:6px 0 2px}
+.row{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:.92rem}
+.row span{width:70px;flex:none;font-weight:700}
+.row i{display:block;height:28px;border-radius:8px;background:var(--c);color:var(--on);font-style:normal;font-weight:800;padding:0 10px;line-height:28px;font-size:.85rem;white-space:nowrap}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.q{background:color-mix(in srgb,var(--c) 8%,var(--card));border:3px dashed var(--c);border-radius:16px;padding:14px}
+.q p{margin:0 0 6px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.opts span{background:var(--card);border:2px solid var(--c);border-radius:10px;padding:6px 10px;font-weight:800;font-size:.93rem}
+details{margin-top:6px}
+summary{cursor:pointer;font-weight:800;color:var(--on);background:var(--c);display:inline-block;border-radius:999px;padding:5px 16px}
+details[open] summary{margin-bottom:6px}
+details .sol{background:var(--card);border:2px solid var(--c);border-radius:12px;padding:9px 12px;font-size:.95rem}
+details .sol b.k{color:var(--c)}
+@media (max-width:520px){.hero h2{font-size:1.45rem}.tab{font-size:.82rem}.head h1{font-size:1.15rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="head"><span class="tag">CANTIDAD</span><h1>Esquema visual, examen USIL</h1></div>
+
+<div class="tabs" role="tablist" aria-label="Subtemas">
+  <button class="tab" role="tab" id="t1" aria-controls="p1" aria-selected="true" style="--c:var(--blue)">Números y unidades</button>
+  <button class="tab" role="tab" id="t2" aria-controls="p2" aria-selected="false" style="--c:var(--teal)">Estimación</button>
+  <button class="tab" role="tab" id="t3" aria-controls="p3" aria-selected="false" style="--c:var(--coral)">Proporcionalidad</button>
+  <button class="tab" role="tab" id="t4" aria-controls="p4" aria-selected="false" style="--c:var(--violet)">Regla de tres</button>
+  <button class="tab" role="tab" id="t5" aria-controls="p5" aria-selected="false" style="--c:var(--amber)">Porcentajes</button>
+  <button class="tab" role="tab" id="t6" aria-controls="p6" aria-selected="false" style="--c:var(--green)">Interés</button>
+</div>
+
+<!-- ============ 1 ============ -->
+<section class="panel" id="p1" role="tabpanel" aria-labelledby="t1" style="--c:var(--blue);--s:var(--blue-s)">
+  <div class="hero"><h2>Números y unidades</h2><p>Operar con orden, cuidar los signos y convertir unidades.</p></div>
+
+  <div class="sec"><h3>Fórmulas</h3></div>
+  <div class="formulas">
+    <div class="f"><span class="lbl">Orden de operaciones</span><span class="m">( ) → potencias y raíces → × ÷ → + −</span><span class="e">Siempre de izquierda a derecha dentro de cada nivel.</span></div>
+    <div class="f"><span class="lbl">Raíz cuadrada (nunca negativa)</span><span class="m">√(a²) = |a|</span><span class="e">√((−3)²) = √9 = 3</span></div>
+    <div class="f"><span class="lbl">Potencias</span><span class="m">aᵐ · aⁿ = aᵐ⁺ⁿ</span><span class="e">2³ · 2² = 2⁵ = 32</span></div>
+    <div class="f"><span class="lbl">División de fracciones</span><span class="m">(a/b) ÷ (c/d) = ad / bc</span><span class="e">(1/2) ÷ (3/4) = 4/6 = 2/3</span></div>
+    <div class="f"><span class="lbl">Unidades</span><span class="m">1 km = 1000 m<br>1 h = 60 min<br>1 kg = 1000 g</span></div>
+  </div>
+
+  <div class="sec"><h3>Ejemplo 1 · balotario, pregunta 6</h3></div>
+  <div class="problem"><span class="src">Pregunta 6</span><p>Calcula M = √(2²) + √((−2)²)</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Separo las dos raíces</span><span class="why">Son dos cálculos que luego se suman. Resuelvo cada uno por su lado.</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Primera raíz: √(2²)</span><span class="why">Primero la potencia: 2² = 4. Luego la raíz: ¿qué número positivo al cuadrado da 4? El 2.</span><span class="calc">√(2²) = √4 = 2</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Segunda raíz: √((−2)²)</span><span class="why">Primero lo que está dentro del paréntesis elevado al cuadrado: (−2)(−2) = +4. Menos por menos da más, así que el signo desaparece.</span><span class="calc">√((−2)²) = √4 = 2</span><div class="warn">Trampa: muchos creen que √4 = ±2 y marcan ±4 o 0. La raíz cuadrada da solo el valor positivo: √(a²) = |a|.</div></div></li>
+    <li><span class="n">4</span><div class="body"><span class="do">Sumo los resultados</span><span class="calc">M = 2 + 2 = 4</span></div></li>
+  </ol>
+  <span class="ans">Respuesta: C) 4</span>
+
+  <div class="sec"><h3>Ejemplo 2 · balotario, pregunta 14</h3></div>
+  <div class="problem"><span class="src">Pregunta 14</span><p>Antonio paga S/84 al mes. De no haber subido la tarifa, ¿cuánto sumaría el pago en el 2017?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Identifico los datos</span><span class="why">Sin subida, paga S/84 todos los meses. El año tiene 12 meses.</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Multiplico tarifa por meses</span><span class="why">Para multiplicar por 12 hago ×10 y ×2 y sumo.</span><span class="calc">84 × 12 = 840 + 168 = 1008</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Reviso las alternativas</span><span class="why">S/840 sería solo 10 meses. S/1068 es lo que pagó de verdad, con la subida. El que corresponde a 12 meses sin subida es S/1008.</span></div></li>
+  </ol>
+  <span class="ans">Respuesta: D) S/1008</span>
+
+  <div class="sec"><h3>Practica</h3></div>
+  <div class="pair">
+    <div class="q"><p><b>P1.</b> Calcula M = √(5²) + √((−3)²) − √(2²)</p>
+      <div class="opts"><span>A) 0</span><span>B) 4</span><span>C) 6</span><span>D) ±6</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">C.</b> √(5²) = 5. √((−3)²) = √9 = 3. √(2²) = 2. Entonces M = 5 + 3 − 2 = 6.</div></details></div>
+    <div class="q"><p><b>P2.</b> Una suscripción cuesta S/45 al mes durante 8 meses y luego S/52 al mes durante 4 meses. ¿Cuánto se paga en el año?</p>
+      <div class="opts"><span>A) S/540</span><span>B) S/568</span><span>C) S/580</span><span>D) S/604</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">B.</b> Primera parte: 45 × 8 = 360. Segunda parte: 52 × 4 = 208. Total: 360 + 208 = 568.</div></details></div>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="panel" id="p2" role="tabpanel" aria-labelledby="t2" hidden style="--c:var(--teal);--s:var(--teal-s)">
+  <div class="hero"><h2>Estimación</h2><p>Si no tienes todo el año, saca el ritmo de lo que hay y proyéctalo.</p></div>
+
+  <div class="sec"><h3>Fórmulas</h3></div>
+  <div class="formulas">
+    <div class="f"><span class="lbl">Paso 1: ritmo</span><span class="m">Ritmo = dato ÷ meses</span><span class="e">340 ÷ 4 = 85 por mes</span></div>
+    <div class="f"><span class="lbl">Paso 2: proyección al año</span><span class="m">Año = ritmo × 12</span><span class="e">85 × 12 = 1020</span></div>
+    <div class="f"><span class="lbl">Atajo en un solo paso</span><span class="m">Año = dato × 12 / meses</span><span class="e">340 × 12/4 = 1020</span></div>
+    <div class="f"><span class="lbl">Cuenta bien los meses</span><span class="m">hasta marzo = 3<br>hasta abril = 4<br>hasta mayo = 5</span></div>
+  </div>
+
+  <div class="sec"><h3>Ejemplo 1 · balotario, pregunta 13</h3></div>
+  <div class="problem"><span class="src">Pregunta 13</span><p>La infografía muestra 2017 solo hasta fin de mayo: 105 tentativas y 45 feminicidios. Con la misma tendencia, ¿cuántas tentativas más que feminicidios habría en todo el año?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Leo los datos de 2017 en el gráfico</span><span class="why">La barra de 2017 tiene (*) y dice “al mes de mayo”. Amarillo (tentativas) = 105. Azul (feminicidios) = 45.</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Cuento los meses transcurridos</span><span class="why">De enero a mayo son 5 meses. El año completo tiene 12. Por eso cada dato se multiplica por 12/5.</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Proyecto las tentativas</span><span class="why">Divido entre 5 para hallar el ritmo mensual y multiplico por 12.</span><span class="calc">105 ÷ 5 = 21 → 21 × 12 = 252</span></div></li>
+    <li><span class="n">4</span><div class="body"><span class="do">Proyecto los feminicidios</span><span class="calc">45 ÷ 5 = 9 → 9 × 12 = 108</span></div></li>
+    <li><span class="n">5</span><div class="body"><span class="do">Resto: “cuántas más tentativas que feminicidios”</span><span class="why">“Cuántas más” pide una diferencia.</span><span class="calc">252 − 108 = 144</span><div class="warn">Atajo: la diferencia hasta mayo es 105 − 45 = 60. Proyectada: 60 × 12/5 = 144. Sale igual y con menos cuentas.</div></div></li>
+  </ol>
+  <span class="ans">Respuesta: B) 144</span>
+
+  <div class="sec"><h3>Ejemplo 2 · extra</h3></div>
+  <div class="problem"><span class="src">Extra</span><p>Una tienda vendió 340 unidades en los primeros 4 meses. Si mantiene el ritmo, ¿cuántas venderá en el año?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Hallo el ritmo mensual</span><span class="calc">340 ÷ 4 = 85 unidades por mes</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Lo llevo a 12 meses</span><span class="calc">85 × 12 = 1020 unidades</span></div></li>
+  </ol>
+  <span class="ans">Respuesta: 1020 unidades</span>
+
+  <div class="sec"><h3>Practica</h3></div>
+  <div class="pair">
+    <div class="q"><p><b>P1.</b> En los primeros 3 meses una empresa recicló 450 kg de papel. Con la misma tendencia, ¿cuántos kg reciclará en el año?</p>
+      <div class="opts"><span>A) 1350</span><span>B) 1800</span><span>C) 2250</span><span>D) 5400</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">B.</b> Ritmo: 450 ÷ 3 = 150 kg por mes. Año: 150 × 12 = 1800.</div></details></div>
+    <div class="q"><p><b>P2.</b> Hasta fin de abril hubo 60 accidentes leves y 24 graves. Con la misma tendencia, ¿cuántos leves más que graves habrá en el año?</p>
+      <div class="opts"><span>A) 72</span><span>B) 108</span><span>C) 144</span><span>D) 36</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">B.</b> Abril son 4 meses y el año tiene 3 bloques de 4 meses. Diferencia hasta abril: 60 − 24 = 36. En el año: 36 × 3 = 108.</div></details></div>
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="panel" id="p3" role="tabpanel" aria-labelledby="t3" hidden style="--c:var(--coral);--s:var(--coral-s)">
+  <div class="hero"><h2>Proporcionalidad</h2><p>Cantidades que cambian juntas manteniendo siempre la misma razón.</p></div>
+
+  <div class="sec"><h3>Fórmulas</h3></div>
+  <div class="formulas">
+    <div class="f"><span class="lbl">Directa: una sube, la otra sube</span><span class="m">a / b = k</span><span class="e">Más polos, más dinero.</span></div>
+    <div class="f"><span class="lbl">Inversa: una sube, la otra baja</span><span class="m">a · b = k</span><span class="e">Más obreros, menos días.</span></div>
+    <div class="f"><span class="lbl">Razón a : b</span><span class="m">a = a′·k y b = b′·k</span><span class="e">Razón 3 : 5 significa 3k y 5k.</span></div>
+    <div class="f"><span class="lbl">Razones encadenadas</span><span class="m">Igualar el término común</span><span class="e">A:B y B:C. Hago que B valga lo mismo en ambas.</span></div>
+    <div class="f"><span class="lbl">Reparto proporcional</span><span class="m">total ÷ suma de razones × su razón</span><span class="e">1200 entre 2, 3 y 5: 1200 ÷ 10 = 120.</span></div>
+  </div>
+
+  <div class="sec"><h3>Ejemplo 1 · balotario, pregunta 7</h3></div>
+  <div class="problem"><span class="src">Pregunta 7</span><p>Por cada 12 polos de Ana, Beto hace 7. Por cada 28 de Beto, Carla hace 15. Si Ana hizo 198 más que Carla, ¿cuántos hizo Beto?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Escribo cada frase como razón</span><span class="calc">Ana : Beto = 12 : 7<br>Beto : Carla = 28 : 15</span><span class="why">Beto aparece en las dos, pero con números distintos (7 y 28). Eso impide unirlas todavía.</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Igualo el valor de Beto</span><span class="why">28 = 7 × 4. Multiplico los dos términos de la primera razón por 4. La razón no cambia si multiplico ambos lados por lo mismo.</span><span class="calc">12 × 4 = 48 y 7 × 4 = 28<br>Ana : Beto = 48 : 28</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Uno las dos razones</span><span class="why">Ahora Beto vale 28 en ambas. Cada número es “k veces”: Ana = 48k, Beto = 28k, Carla = 15k.</span><span class="calc">Ana : Beto : Carla = 48 : 28 : 15</span>
+      <div class="bars" role="img" aria-label="Barras: Ana 48k, Beto 28k, Carla 15k">
+        <div class="row"><span>Ana</span><i style="width:100%">48k</i></div>
+        <div class="row"><span>Beto</span><i style="width:58%">28k</i></div>
+        <div class="row"><span>Carla</span><i style="width:31%">15k</i></div>
+      </div></div></li>
+    <li><span class="n">4</span><div class="body"><span class="do">Uso el dato numérico para hallar k</span><span class="why">“Ana hizo 198 más que Carla” significa Ana − Carla = 198.</span><span class="calc">48k − 15k = 33k = 198<br>k = 198 ÷ 33 = 6</span></div></li>
+    <li><span class="n">5</span><div class="body"><span class="do">Calculo lo que piden: Beto</span><span class="calc">28k = 28 × 6 = 168</span><div class="warn">Comprobación: Ana = 48 × 6 = 288 y Carla = 15 × 6 = 90. La diferencia es 288 − 90 = 198. ✓</div></div></li>
+  </ol>
+  <span class="ans">Respuesta: B) 168</span>
+
+  <div class="sec"><h3>Ejemplo 2 · extra</h3></div>
+  <div class="problem"><span class="src">Extra</span><p>Las edades de dos hermanos están en razón 3 : 5 y suman 48 años. ¿Cuál es la edad del mayor?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Expreso las edades con k</span><span class="calc">Menor = 3k, mayor = 5k</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Uso que suman 48</span><span class="calc">3k + 5k = 8k = 48 → k = 6</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Calculo el mayor</span><span class="calc">5k = 5 × 6 = 30 años</span></div></li>
+  </ol>
+  <span class="ans">Respuesta: 30 años</span>
+
+  <div class="sec"><h3>Practica</h3></div>
+  <div class="pair">
+    <div class="q"><p><b>P1.</b> Por cada 5 pasteles de Rosa, Sofía vende 3. Por cada 6 de Sofía, Tina vende 7. Si Rosa vendió 48 más que Tina, ¿cuántos vendió Sofía?</p>
+      <div class="opts"><span>A) 64</span><span>B) 96</span><span>C) 112</span><span>D) 160</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">B.</b> Rosa : Sofía = 5 : 3. Igualo Sofía en 6: multiplico por 2 y queda 10 : 6. Entonces Rosa : Sofía : Tina = 10 : 6 : 7. Rosa − Tina = 10k − 7k = 3k = 48, así que k = 16. Sofía = 6k = 96.</div></details></div>
+    <div class="q"><p><b>P2.</b> Se reparten S/1200 entre A, B y C en partes proporcionales a 2, 3 y 5. ¿Cuánto recibe C?</p>
+      <div class="opts"><span>A) S/360</span><span>B) S/480</span><span>C) S/600</span><span>D) S/720</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">C.</b> Suma de razones: 2 + 3 + 5 = 10. Cada parte vale 1200 ÷ 10 = 120. C recibe 5 × 120 = 600.</div></details></div>
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="panel" id="p4" role="tabpanel" aria-labelledby="t4" hidden style="--c:var(--violet);--s:var(--violet-s)">
+  <div class="hero"><h2>Regla de tres simple y compuesta</h2><p>Hallar un dato desconocido cuando las cantidades son proporcionales.</p></div>
+
+  <div class="sec"><h3>Fórmulas</h3></div>
+  <div class="formulas">
+    <div class="f"><span class="lbl">Simple directa: una sube, la otra sube</span><span class="m">x = (b · c) / a</span><span class="e">a → b y c → x. Se multiplica en aspa.</span></div>
+    <div class="f"><span class="lbl">Simple inversa: una sube, la otra baja</span><span class="m">x = (a · b) / c</span><span class="e">a → b y c → x. Se multiplica en línea.</span></div>
+    <div class="f"><span class="lbl">Compuesta</span><span class="m">x = dato × razones</span><span class="e">Magnitud directa: la razón va tal cual. Inversa: la razón va invertida.</span></div>
+    <div class="f"><span class="lbl">Cómo decidir</span><span class="m">¿Más → más? directa<br>¿Más → menos? inversa</span><span class="e">Más obreros, menos días: inversa.</span></div>
+  </div>
+
+  <div class="problem" style="margin-top:14px"><p>El balotario no trae un ejemplo de este subtema, pero está en la lista de contenidos. Estos ejemplos son del mismo nivel.</p></div>
+
+  <div class="sec"><h3>Ejemplo 1 · simple directa</h3></div>
+  <div class="problem"><span class="src">Ejemplo</span><p>8 polos cuestan S/96. ¿Cuánto cuestan 15 polos?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Ordeno los datos en dos filas</span><span class="calc">8 polos → S/96<br>15 polos → x</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Decido si es directa o inversa</span><span class="why">Más polos cuestan más dinero: las dos suben, es directa.</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Multiplico en aspa y divido</span><span class="calc">x = (96 × 15) / 8 = 1440 / 8 = 180</span><div class="warn">Atajo: 96 ÷ 8 = 12 es el precio de un polo. Luego 12 × 15 = 180.</div></div></li>
+  </ol>
+  <span class="ans">Respuesta: S/180</span>
+
+  <div class="sec"><h3>Ejemplo 2 · compuesta</h3></div>
+  <div class="problem"><span class="src">Ejemplo</span><p>5 máquinas producen 400 piezas en 4 horas. ¿Cuántas piezas producirán 8 máquinas en 6 horas?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Pongo los datos conocidos y la incógnita</span><span class="calc">5 máquinas · 4 h → 400 piezas<br>8 máquinas · 6 h → x piezas</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Comparo cada magnitud con la incógnita (piezas)</span><span class="why">Más máquinas, más piezas: directa. Más horas, más piezas: directa.</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Multiplico el dato por cada razón</span><span class="calc">x = 400 × (8/5) × (6/4)<br>x = 400 × 1,6 × 1,5 = 960</span></div></li>
+  </ol>
+  <span class="ans">Respuesta: 960 piezas</span>
+
+  <div class="sec"><h3>Practica</h3></div>
+  <div class="pair">
+    <div class="q"><p><b>P1.</b> 12 obreros terminan una obra en 18 días. ¿En cuántos días la terminarán 9 obreros?</p>
+      <div class="opts"><span>A) 13,5</span><span>B) 20</span><span>C) 24</span><span>D) 27</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">C.</b> Menos obreros necesitan más días: es inversa. x = (12 × 18) / 9 = 216 / 9 = 24 días.</div></details></div>
+    <div class="q"><p><b>P2.</b> 4 grifos llenan 3 tanques en 6 horas. ¿Cuántas horas necesitan 6 grifos para llenar 9 tanques?</p>
+      <div class="opts"><span>A) 6</span><span>B) 9</span><span>C) 12</span><span>D) 18</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">C.</b> Más grifos, menos horas: inversa, la razón va invertida (4/6). Más tanques, más horas: directa (9/3). x = 6 × (4/6) × (9/3) = 6 × 2/3 × 3 = 12 horas.</div></details></div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="panel" id="p5" role="tabpanel" aria-labelledby="t5" hidden style="--c:var(--amber);--s:var(--amber-s)">
+  <div class="hero"><h2>Porcentajes</h2><p>Una parte de cada 100. Se convierte en decimal y se multiplica.</p></div>
+
+  <div class="sec"><h3>Fórmulas</h3></div>
+  <div class="formulas">
+    <div class="f"><span class="lbl">Parte de un total</span><span class="m">a% de N = (a/100) · N</span><span class="e">20% de 150 = 0,20 × 150 = 30</span></div>
+    <div class="f"><span class="lbl">Total a partir de una parte</span><span class="m">Total = parte ÷ %</span><span class="e">Si 252 es el 36%: 252 ÷ 0,36 = 700</span></div>
+    <div class="f"><span class="lbl">Complemento</span><span class="m">100% − x%</span><span class="e">Si 44,5% no lo hace, 55,5% sí lo hace.</span></div>
+    <div class="f"><span class="lbl">Aumento y descuento</span><span class="m">N · (1 + r/100)<br>N · (1 − r/100)</span><span class="e">Aumento de 25%: × 1,25. Descuento de 20%: × 0,80.</span></div>
+    <div class="f"><span class="lbl">Sucesivos</span><span class="m">Se multiplican los factores</span><span class="e">No se suman los porcentajes.</span></div>
+  </div>
+
+  <div class="sec"><h3>Ejemplo 1 · balotario, pregunta 12</h3></div>
+  <div class="problem"><span class="src">Pregunta 12</span><p>La infografía dice que el 44,5% de las mujeres agredidas no busca ayuda. Si 2220 mujeres agredidas buscaron ayuda, ¿cuántas fueron agredidas en total?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Identifico a qué grupo se refiere cada dato</span><span class="why">El 44,5% es de las que no buscan ayuda. Los 2220 son de las que sí buscaron. Son grupos distintos.</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Hallo el porcentaje que sí buscó ayuda</span><span class="why">El total es el 100%, así que resto el complemento.</span><span class="calc">100% − 44,5% = 55,5%</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Planteo la ecuación</span><span class="why">“2220 es el 55,5% del total”.</span><span class="calc">0,555 · T = 2220</span></div></li>
+    <li><span class="n">4</span><div class="body"><span class="do">Despejo T</span><span class="calc">T = 2220 ÷ 0,555 = 4000</span><div class="warn">Comprobación: el 44,5% de 4000 es 1780. Entonces 1780 + 2220 = 4000. ✓<br>Trampa: 2220 ÷ 0,445 da casi 5000 (alternativa A). Es un error porque el 44,5% no corresponde a los 2220.</div></div></li>
+  </ol>
+  <span class="ans">Respuesta: B) 4000</span>
+
+  <div class="sec"><h3>Ejemplo 2 · descuentos sucesivos</h3></div>
+  <div class="problem"><span class="src">Ejemplo</span><p>Un celular cuesta S/1200. Tiene 15% de descuento y luego otro 10% adicional. ¿Cuánto se paga?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Primer descuento: queda el 85%</span><span class="calc">1200 × 0,85 = 1020</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Segundo descuento sobre el nuevo precio: queda el 90%</span><span class="calc">1020 × 0,90 = 918</span><div class="warn">Trampa: no es un 25% de descuento. El 10% se aplica a S/1020, no a S/1200.</div></div></li>
+  </ol>
+  <span class="ans">Respuesta: S/918</span>
+
+  <div class="sec"><h3>Practica</h3></div>
+  <div class="pair">
+    <div class="q"><p><b>P1.</b> El 36% de los postulantes aprobó. Si aprobaron 252, ¿cuántos postularon?</p>
+      <div class="opts"><span>A) 630</span><span>B) 700</span><span>C) 800</span><span>D) 907</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">B.</b> 0,36 · T = 252, entonces T = 252 ÷ 0,36 = 700.</div></details></div>
+    <div class="q"><p><b>P2.</b> Una tarifa de S/80 sube 25% y luego baja 20%. ¿Cuál es el precio final?</p>
+      <div class="opts"><span>A) S/75</span><span>B) S/80</span><span>C) S/84</span><span>D) S/100</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">B.</b> Sube: 80 × 1,25 = 100. Baja: 100 × 0,80 = 80. Vuelve al precio inicial, porque el 20% se aplica sobre S/100 y no sobre S/80.</div></details></div>
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="panel" id="p6" role="tabpanel" aria-labelledby="t6" hidden style="--c:var(--green);--s:var(--green-s)">
+  <div class="hero"><h2>Interés simple y compuesto</h2><p>La ganancia de un dinero depositado o prestado durante un tiempo.</p></div>
+
+  <div class="sec"><h3>Fórmulas</h3></div>
+  <div class="formulas">
+    <div class="f"><span class="lbl">Interés simple</span><span class="m">I = C · r · t<br>M = C + I</span><span class="e">Siempre sobre el capital inicial.</span></div>
+    <div class="f"><span class="lbl">Interés compuesto</span><span class="m">M = C · (1 + r)ᵗ<br>I = M − C</span><span class="e">Cada periodo se calcula sobre lo acumulado.</span></div>
+    <div class="f"><span class="lbl">Significado</span><span class="m">C capital · r tasa · t tiempo · M monto</span><span class="e">r va en decimal: 5% = 0,05.</span></div>
+    <div class="f"><span class="lbl">Regla de oro</span><span class="m">r y t en la misma unidad</span><span class="e">Tasa mensual con meses. Tasa anual con años.</span></div>
+  </div>
+
+  <div class="problem" style="margin-top:14px"><p>El balotario no trae un ejemplo de este subtema, pero está en la lista de contenidos. Estos ejemplos son del mismo nivel.</p></div>
+
+  <div class="sec"><h3>Ejemplo 1 · interés simple</h3></div>
+  <div class="problem"><span class="src">Ejemplo</span><p>Se depositan S/2000 al 5% anual de interés simple durante 3 años. ¿Cuál es el monto?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Ordeno los datos</span><span class="calc">C = 2000 · r = 0,05 · t = 3 años</span><span class="why">La tasa es anual y el tiempo está en años, así que coinciden.</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Calculo el interés</span><span class="calc">I = 2000 × 0,05 × 3 = 300</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Sumo el capital: piden el monto</span><span class="calc">M = 2000 + 300 = 2300</span></div></li>
+  </ol>
+  <span class="ans">Respuesta: S/2300</span>
+
+  <div class="sec"><h3>Ejemplo 2 · interés compuesto</h3></div>
+  <div class="problem"><span class="src">Ejemplo</span><p>Se depositan S/1000 al 10% anual de interés compuesto durante 2 años. ¿Cuál es el monto?</p></div>
+  <ol class="steps">
+    <li><span class="n">1</span><div class="body"><span class="do">Uso la fórmula del monto compuesto</span><span class="calc">M = 1000 × (1 + 0,10)² = 1000 × 1,21</span></div></li>
+    <li><span class="n">2</span><div class="body"><span class="do">Calculo</span><span class="calc">M = 1210</span></div></li>
+    <li><span class="n">3</span><div class="body"><span class="do">Compruebo año por año</span><span class="calc">Año 1: 1000 × 1,10 = 1100<br>Año 2: 1100 × 1,10 = 1210</span><div class="warn">Con interés simple serían S/1200. Los S/10 de diferencia son los intereses que ganaron los intereses del primer año.</div></div></li>
+  </ol>
+  <span class="ans">Respuesta: S/1210</span>
+
+  <div class="sec"><h3>Practica</h3></div>
+  <div class="pair">
+    <div class="q"><p><b>P1.</b> ¿Qué interés simple produce un capital de S/4000 al 3% mensual durante 5 meses?</p>
+      <div class="opts"><span>A) S/120</span><span>B) S/600</span><span>C) S/4600</span><span>D) S/6000</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">B.</b> La tasa es mensual y el tiempo está en meses. I = 4000 × 0,03 × 5 = 600. Piden el interés, no el monto (S/4600).</div></details></div>
+    <div class="q"><p><b>P2.</b> ¿Cuál es el monto de S/5000 al 20% anual de interés compuesto durante 2 años?</p>
+      <div class="opts"><span>A) S/7000</span><span>B) S/7200</span><span>C) S/7500</span><span>D) S/8000</span></div>
+      <details><summary>Ver solución</summary><div class="sol"><b class="k">B.</b> M = 5000 × (1,20)² = 5000 × 1,44 = 7200. Año por año: 5000 → 6000 → 7200.</div></details></div>
+  </div>
+</section>
+
+
+</div>
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.tab'));
+  function show(i){
+    tabs.forEach(function(t,j){
+      t.setAttribute('aria-selected',j===i?'true':'false');
+      document.getElementById(t.getAttribute('aria-controls')).hidden=(j!==i);
+    });
+    window.scrollTo(0,0);
+  }
+  tabs.forEach(function(t,i){t.addEventListener('click',function(){show(i)})});
+})();
+</script>
+</body>
+</html>
